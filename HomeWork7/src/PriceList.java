@@ -52,17 +52,35 @@ public class PriceList {
 				setCount(currentCount + 1);
 				return true;
 			} else {
-				System.out.println("Already in list");
+				System.out.println("Product \"" + newProduct.getValue()
+						+ "\" with price " + newProduct.getPrice()
+						+ " already in list");
 				return false;
 			}
 		}
 	}
-	public Product find(){
-		return null;
-		
+
+	public Product[] findPriceRange(int start, int end) {
+		final int LIMIT = 20;
+		Product[] firstTwenty = new Product[LIMIT];
+		int currentIndex = 0;
+
+		for (int i = start; i < end; i++) {
+			if (product.containsKey(i)) {
+				List<Product> currentList = product.get(i);
+				for (Product product : currentList) {
+					if (currentIndex < LIMIT) {
+						firstTwenty[currentIndex] = product;
+						currentIndex++;
+					}
+				}
+			}
+		}
+		return firstTwenty;
+
 	}
 
-	private class Product {
+	public class Product {
 		private String value;
 		private int price;
 
