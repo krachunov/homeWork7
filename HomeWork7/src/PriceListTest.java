@@ -20,15 +20,25 @@ public class PriceListTest {
 		long endTime = System.nanoTime();
 		System.out.println("Total Time to add 500 000 elements: "
 				+ (endTime - startTime) * (Math.pow(10, -9)));
-		
-		
+
 		long startTime2 = System.nanoTime();
-		Object[] arrayProduc = priceList.findPriceRange(15, 99);
+		for (int i = 0; i < 10000; i++) {
+			Random random = new Random();
+			int randomStartPrice = random.nextInt(100);
+			int randomEndPrice = random.nextInt(100);
+
+			while (randomStartPrice > randomEndPrice) {
+				randomStartPrice = random.nextInt(100);
+				randomEndPrice = random.nextInt(100);
+			}
+			Object[] arrayProduc = priceList.findPriceRange(randomStartPrice,
+					randomEndPrice);
+		}
 		long endTime2 = System.nanoTime();
-		System.out.println("Time to finde element: "
-				+ (endTime2 - startTime2) * (Math.pow(10, -9)));
-		
-		//TOTO print result
-	System.out.println("");
+		System.out.println("Time to finde element: " + (endTime2 - startTime2)
+				* (Math.pow(10, -9)));
+
+		// TOTO print result
+		System.out.println("");
 	}
 }
