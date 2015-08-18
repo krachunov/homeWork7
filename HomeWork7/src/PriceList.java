@@ -27,6 +27,13 @@ public class PriceList {
 		setCount(0);
 	}
 
+	/**
+	 * Add new element, if element has same value and same price there is equals
+	 * 
+	 * @param value
+	 * @param price
+	 * @return - true if element add success or false if not
+	 */
 	public boolean add(String value, int price) {
 		if (!getProduct().containsKey(price)) {
 			List<Product> currentList = new ArrayList<Product>();
@@ -49,6 +56,10 @@ public class PriceList {
 				return false;
 			}
 		}
+	}
+	public Product find(){
+		return null;
+		
 	}
 
 	private class Product {
