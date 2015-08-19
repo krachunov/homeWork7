@@ -39,7 +39,11 @@ public class Problem1 {
 
 	public void FindWordInFile(String fileName) throws FileNotFoundException,
 			IOException {
+		long startTime = System.nanoTime();
 		List<String> text = readLineFromFile(new File(fileName));
+		long endTime = System.nanoTime();
+		System.out.println("Total Time to read file: "
+				+ (endTime - startTime) * (Math.pow(10, -9)));
 		Map<String, Integer> dictionary = new HashMap();
 
 		Scanner sc = new Scanner(System.in);

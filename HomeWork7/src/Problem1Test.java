@@ -9,7 +9,7 @@ public class Problem1Test {
 			IOException {
 		Problem1 test = new Problem1();
 		
-		test.FindWordInFile("d:\\test.txt");
+		test.FindWordInFile("d:\\100.txt");
 		
 	}
 
