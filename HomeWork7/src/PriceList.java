@@ -66,15 +66,22 @@ public class PriceList {
 		int currentIndex = 0;
 
 		for (int i = start; i < end; i++) {
-			if (product.containsKey(i)) {
-				List<Product> currentList = product.get(i);
-				for (Product product : currentList) {
-					if (currentIndex < LIMIT) {
-						firstTwenty[currentIndex] = product;
-						currentIndex++;
+			if (currentIndex < LIMIT) {
+				if (product.containsKey(i)) {
+					List<Product> currentList = product.get(i);
+					for (Product product : currentList) {
+						if (currentIndex < LIMIT) {
+							firstTwenty[currentIndex] = product;
+							currentIndex++;
+						} else {
+							break;
+						}
 					}
 				}
+			} else {
+				break;
 			}
+
 		}
 		return firstTwenty;
 

@@ -8,12 +8,14 @@ public class PriceListTest {
 
 	public static void main(String[] args) {
 		PriceList priceList = new PriceList();
+		final int PRICE_LIMIT = 100; // Set price range between 0 and value
+										// PRICE_LIMIT;
 
 		long startTime = System.nanoTime();
 
 		for (int i = 0; i < 500000; i++) {
 			Random random = new Random();
-			int randomPrice = random.nextInt(10000);
+			int randomPrice = random.nextInt(PRICE_LIMIT);
 			priceList.add("product" + i, randomPrice);
 		}
 
@@ -24,12 +26,12 @@ public class PriceListTest {
 		long startTime2 = System.nanoTime();
 		for (int i = 0; i < 10000; i++) {
 			Random random = new Random();
-			int randomStartPrice = random.nextInt(1000);
-			int randomEndPrice = random.nextInt(1000);
+			int randomStartPrice = random.nextInt(PRICE_LIMIT);
+			int randomEndPrice = random.nextInt(PRICE_LIMIT);
 
 			while (randomStartPrice > randomEndPrice) {
-				randomStartPrice = random.nextInt(1000);
-				randomEndPrice = random.nextInt(1000);
+				randomStartPrice = random.nextInt(PRICE_LIMIT);
+				randomEndPrice = random.nextInt(PRICE_LIMIT);
 			}
 			Object[] arrayProduc = priceList.findPriceRange(randomStartPrice,
 					randomEndPrice);
