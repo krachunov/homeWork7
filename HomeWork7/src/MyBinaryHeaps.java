@@ -4,9 +4,9 @@ import java.util.Comparator;
 public class MyBinaryHeaps<T> {
 	private class Node<T extends Comparator<T>> {
 		private T value;
-		private T parent;
-		private T leftChild;
-		private T rightChild;
+		private Node parent;
+		private Node leftChild;
+		private Node rightChild;
 
 		public Node(T element) {
 			setValue(element);
@@ -20,27 +20,27 @@ public class MyBinaryHeaps<T> {
 			this.value = value;
 		}
 
-		public T getParent() {
+		public Node getParent() {
 			return parent;
 		}
 
-		public void setParent(T parent) {
+		public void setParent(Node parent) {
 			this.parent = parent;
 		}
 
-		public T getLeftChild() {
+		public Node getLeftChild() {
 			return leftChild;
 		}
 
-		public void setLeftChild(T leftChild) {
+		public void setLeftChild(Node leftChild) {
 			this.leftChild = leftChild;
 		}
 
-		public T getRightChild() {
+		public Node getRightChild() {
 			return rightChild;
 		}
 
-		public void setRightChild(T rightChild) {
+		public void setRightChild(Node rightChild) {
 			this.rightChild = rightChild;
 		}
 
@@ -48,7 +48,7 @@ public class MyBinaryHeaps<T> {
 
 	private Node[] arr;
 	private final int SIZE = 128;
-	private int count = 0;
+	private int count = 1;
 
 	public int getCount() {
 		return count;
@@ -84,6 +84,10 @@ public class MyBinaryHeaps<T> {
 		int index = getCount();
 		getArr()[index] = newElement;
 		setCount(getCount() + 1);
+		if (count / 2 > 0) {
+			newElement.setParent(getArr()[getCount() / 2]);
+		}
+		// TODO relocate new node to right position
 
 		return true;
 	}
