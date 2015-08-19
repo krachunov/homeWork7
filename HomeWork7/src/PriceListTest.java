@@ -13,7 +13,7 @@ public class PriceListTest {
 
 		for (int i = 0; i < 500000; i++) {
 			Random random = new Random();
-			int randomPrice = random.nextInt(100);
+			int randomPrice = random.nextInt(10000);
 			priceList.add("product" + i, randomPrice);
 		}
 
@@ -24,12 +24,12 @@ public class PriceListTest {
 		long startTime2 = System.nanoTime();
 		for (int i = 0; i < 10000; i++) {
 			Random random = new Random();
-			int randomStartPrice = random.nextInt(100);
-			int randomEndPrice = random.nextInt(100);
+			int randomStartPrice = random.nextInt(1000);
+			int randomEndPrice = random.nextInt(1000);
 
 			while (randomStartPrice > randomEndPrice) {
-				randomStartPrice = random.nextInt(100);
-				randomEndPrice = random.nextInt(100);
+				randomStartPrice = random.nextInt(1000);
+				randomEndPrice = random.nextInt(1000);
 			}
 			Object[] arrayProduc = priceList.findPriceRange(randomStartPrice,
 					randomEndPrice);
@@ -38,7 +38,6 @@ public class PriceListTest {
 		System.out.println("Time to finde element: " + (endTime2 - startTime2)
 				* (Math.pow(10, -9)));
 
-		// TOTO print result
 		System.out.println("");
 	}
 }
