@@ -8,6 +8,10 @@ public class MyBinaryHeapTest {
 		myHeap.add(11);
 		myHeap.add(12);
 		myHeap.add(13);
+		myHeap.add(14);
+		myHeap.add(15);
+		myHeap.add(16);
+		myHeap.add(17);
 		
 
 	}

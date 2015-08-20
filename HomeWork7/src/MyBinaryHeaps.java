@@ -89,8 +89,14 @@ public class MyBinaryHeaps<T> {
 		Node newElement = new Node(element);
 		int index = getCount();
 		getArr()[index] = newElement;
-		if (count / 2 > 0) {
+		if (getCount() / 2 > 0) {
 			newElement.setParent(getArr()[getCount() / 2]);
+			Node parent = newElement.getParent();
+			if ((getCount() % 2) == 0) {
+				parent.setLeftChild(newElement);
+			} else {
+				parent.setRightChild(newElement);
+			}
 		}
 		setCount(getCount() + 1);
 
