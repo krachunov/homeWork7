@@ -81,6 +81,9 @@ public class MyBinaryHeaps<T> {
 	public void relocateNewNode() {
 		Node child = getArr()[getCount()];
 		Node parent = getArr()[getCount() / 2];
+//		while (child.getValue() > parent.getValue()) {
+//
+//		}
 
 	}
 
