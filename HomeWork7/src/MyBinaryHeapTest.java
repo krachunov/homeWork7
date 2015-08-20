@@ -13,7 +13,7 @@ public class MyBinaryHeapTest {
 		myHeap.add(16);
 		myHeap.add(17);
 		
-
+		myHeap.print();
 	}
 
 }

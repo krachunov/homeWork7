@@ -45,6 +45,13 @@ public class MyBinaryHeaps<T> {
 			this.rightChild = rightChild;
 		}
 
+		@Override
+		public String toString() {
+			return "Value: " + getValue() + " left child: " + getLeftChild()
+					+ " right child: " + getRightChild();
+
+		}
+
 	}
 
 	private Node[] arr;
@@ -114,6 +121,12 @@ public class MyBinaryHeaps<T> {
 		// TODO
 		return element;
 
+	}
+
+	public void print() {
+		for (int i = 0; i < arr.length; i++) {
+			System.out.println(arr[i].getValue());
+		}
 	}
 
 }
