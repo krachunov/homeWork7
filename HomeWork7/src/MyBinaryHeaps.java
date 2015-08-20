@@ -3,7 +3,7 @@ import java.util.Comparator;
 
 public class MyBinaryHeaps<T> {
 
-	private class Node<T extends Comparator<T>> {
+	private class Node<T> {
 		private T value;
 		private Node parent;
 		private Node leftChild;
@@ -48,7 +48,7 @@ public class MyBinaryHeaps<T> {
 	}
 
 	private Node[] arr;
-	private final int SIZE = 128;
+	private final int SIZE = 3;
 	private int count = 1;
 
 	public int getCount() {
@@ -81,14 +81,13 @@ public class MyBinaryHeaps<T> {
 	public void relocateNewNode() {
 		Node child = getArr()[getCount()];
 		Node parent = getArr()[getCount() / 2];
-//		while (child.getValue() > parent.getValue()) {
-//
-//		}
+		// while (child.getValue() > parent.getValue()) {
+		//
+		// }
 
 	}
 
-	public boolean add(Comparator element) {
-		// TODO - check this
+	public boolean add(T element) {
 		grow();
 		Node newElement = new Node(element);
 		int index = getCount();
