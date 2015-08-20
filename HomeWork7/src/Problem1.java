@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Problem1 {
-	private Map<String, Integer> dictionary;
+	// private Map<String, Integer> dictionary;
 
 	/**
 	 * 
@@ -20,16 +20,22 @@ public class Problem1 {
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
-	private static List<String> readLineFromFile(File inputFile)
+	private static Map<String, Integer> readLineFromFile(File inputFile)
 			throws FileNotFoundException, IOException {
-		List<String> everyWord = new ArrayList<String>();
+		Map<String, Integer> everyWord = new HashMap();
 
 		try (BufferedReader br = new BufferedReader(new FileReader(inputFile))) {
 			String line = br.readLine();
+			int currentCount = -1;
 			while (line != null) {
 				String[] words = line.split(" ");
 				for (String word : words) {
-					everyWord.add(word.trim());
+					if (!everyWord.containsKey(word)) {
+						everyWord.put(word, 1);
+					} else {
+						currentCount = everyWord.get(word);
+						everyWord.put(word, currentCount + 1);
+					}
 				}
 				line = br.readLine();
 			}
@@ -40,11 +46,11 @@ public class Problem1 {
 	public void FindWordInFile(String fileName) throws FileNotFoundException,
 			IOException {
 		long startTime = System.nanoTime();
-		List<String> text = readLineFromFile(new File(fileName));
+		Map<String, Integer> text = readLineFromFile(new File(fileName));
 		long endTime = System.nanoTime();
-		System.out.println("Total Time to read file: "
-				+ (endTime - startTime) * (Math.pow(10, -9)));
-		Map<String, Integer> dictionary = new HashMap();
+		System.out.println("Total Time to read file: " + (endTime - startTime)
+				* (Math.pow(10, -9)));
+		List<String> searchingWord = new ArrayList<String>();
 
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Enter the number of word");
@@ -52,17 +58,13 @@ public class Problem1 {
 		System.out.println("Enter " + numberWord + " words:");
 		for (int i = 0; i < numberWord; i++) {
 			String word = sc.next();
-			dictionary.put(word, 0);
+			searchingWord.add(word.trim());
 		}
 		int currentCount = -1;
-		for (String word : text) {
-			if (dictionary.containsKey(word)) {
-				currentCount = dictionary.get(word);
-				dictionary.put(word, currentCount + 1);
+		for (String word : searchingWord) {
+			if (text.containsKey(word)) {
+				System.out.println(word + " -> " + text.get(word));
 			}
-		}
-		for (Map.Entry<String, Integer> entry : dictionary.entrySet()) {
-			System.out.println(entry.getKey() + " -> " + entry.getValue());
 		}
 	}
 

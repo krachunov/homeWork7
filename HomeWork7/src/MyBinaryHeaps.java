@@ -77,6 +77,10 @@ public class MyBinaryHeaps<T> {
 		}
 	}
 
+	public void relocateNewNode() {
+		// TODO
+	}
+
 	public boolean add(Comparator element) {
 		// TODO - check this
 		grow();
