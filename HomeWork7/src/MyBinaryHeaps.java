@@ -92,10 +92,10 @@ public class MyBinaryHeaps<T> {
 		Node newElement = new Node(element);
 		int index = getCount();
 		getArr()[index] = newElement;
-		setCount(getCount() + 1);
 		if (count / 2 > 0) {
 			newElement.setParent(getArr()[getCount() / 2]);
 		}
+		setCount(getCount() + 1);
 
 		// TODO relocate new node to right position
 
