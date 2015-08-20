@@ -2,6 +2,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public class MyBinaryHeaps<T> {
+
 	private class Node<T extends Comparator<T>> {
 		private T value;
 		private Node parent;
@@ -78,7 +79,9 @@ public class MyBinaryHeaps<T> {
 	}
 
 	public void relocateNewNode() {
-		// TODO
+		Node child = getArr()[getCount()];
+		Node parent = getArr()[getCount() / 2];
+
 	}
 
 	public boolean add(Comparator element) {
@@ -91,6 +94,7 @@ public class MyBinaryHeaps<T> {
 		if (count / 2 > 0) {
 			newElement.setParent(getArr()[getCount() / 2]);
 		}
+
 		// TODO relocate new node to right position
 
 		return true;
@@ -106,4 +110,5 @@ public class MyBinaryHeaps<T> {
 		return element;
 
 	}
+
 }
