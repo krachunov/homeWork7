@@ -2,18 +2,21 @@
 public class MyBinaryHeapTest {
 
 	public static void main(String[] args) {
-		MyBinaryHeaps<Integer>myHeap = new MyBinaryHeaps<Integer>();
+		MyBinaryHeaps2<Integer> myHeap = new MyBinaryHeaps2<Integer>();
+
+		myHeap.Enqueue(20);
+		myHeap.Enqueue(8);
+		myHeap.Enqueue(30);
+		myHeap.Enqueue(5);
+		myHeap.Enqueue(50);
+	
+		for (Object element : myHeap.getArr()) {
+			System.out.println(element);
+		}
+
+	
 		
-		myHeap.add(10);
-		myHeap.add(11);
-		myHeap.add(12);
-		myHeap.add(13);
-		myHeap.add(14);
-		myHeap.add(15);
-		myHeap.add(16);
-		myHeap.add(17);
-		
-		myHeap.print();
+	
 	}
 
 }
