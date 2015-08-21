@@ -128,11 +128,15 @@ public class MyBinaryHeaps<T extends Comparable<T>> implements Comparator<T> {
 	 */
 	@SuppressWarnings("unchecked")
 	private void relocateNewNode() {
-		// get the last add element
+		// get the last add element index
 		int currentIndex = getCount();
+		// take his parent index
 		int parentIndex = getParentIndex(currentIndex);
+
 		T child = (T) getArr()[currentIndex];
 		T parent = (T) getArr()[parentIndex];
+		// check whether the parent has a greater value than the child and
+		// replace them if they are
 		while (parent.compareTo(child) > 0 && currentIndex > 0) {
 			swap(currentIndex, parentIndex);
 			currentIndex = parentIndex;
@@ -153,9 +157,12 @@ public class MyBinaryHeaps<T extends Comparable<T>> implements Comparator<T> {
 	 * @return - true or false
 	 */
 	public boolean enqueue(T element) {
+		// check whether there is a need to increase the array
 		grow();
+		// take counter and use it to index
 		int index = getCount();
 		getArr()[index] = element;
+		// if more than one element check them if they are properly located
 		if (getCount() > 0) {
 			relocateNewNode();
 		}
@@ -201,11 +208,9 @@ public class MyBinaryHeaps<T extends Comparable<T>> implements Comparator<T> {
 		return element;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		return (this == obj);
-	}
-
+	/**
+	 * Print all the elements in the order of the array
+	 */
 	public void print() {
 		for (Object element : this.getArr()) {
 			if (element != null) {
