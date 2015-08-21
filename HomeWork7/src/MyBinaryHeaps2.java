@@ -8,17 +8,8 @@ public class MyBinaryHeaps2<T extends Comparable<T>> implements Comparator<T> {
 	}
 
 	private Object[] arr;
-	private T element;
 	private final int SIZE = 16;
 	private int count = 0;
-
-	public T getElement() {
-		return element;
-	}
-
-	public void setElement(T element) {
-		this.element = element;
-	}
 
 	public int getCount() {
 		return count;
@@ -32,7 +23,6 @@ public class MyBinaryHeaps2<T extends Comparable<T>> implements Comparator<T> {
 		return arr;
 	}
 
-	@SuppressWarnings("unchecked")
 	public MyBinaryHeaps2() {
 		arr = new Object[SIZE];
 	}
@@ -48,25 +38,65 @@ public class MyBinaryHeaps2<T extends Comparable<T>> implements Comparator<T> {
 		}
 	}
 
-	private int leftChild(int index) {
-		return (index * 2 < getArr().length - 1 ? index * 2 : -1);
+	/**
+	 * Find left child to the given index
+	 * 
+	 * @param index
+	 *            parent index
+	 * @return
+	 */
+	private int getLeftChildIndex(int index) {
+		return ((index * 2) + 1 < getCount() ? (index * 2) + 1 : -1);
 	}
 
-	private int rightChild(int index) {
-		return ((index * 2 + 1) < getArr().length - 1 ? (index * 2 + 1) : -1);
+	/**
+	 * Find right child to the given index
+	 * 
+	 * @param index
+	 *            parent index
+	 * @return
+	 */
+	private int getRightChildIndex(int index) {
+
+		return ((index * 2 + 2) < getCount() ? (index * 2 + 2) : -1);
 	}
 
-	private int parentIndex(int index) {
-		return (index / 2 > 0 ? index / 2 : index / 2 == 0 ? 0 : -1);
+	/**
+	 * Find parent to the given index
+	 * 
+	 * @param index
+	 * @return
+	 */
+	private int getParentIndex(int index) {
+		return ((index - 1) / 2 > 0 ? (index - 1) / 2
+				: (((index - 1) / 2 == 0) ? 0 : -1));
 	}
 
-	private int smalestChild(int left, int right) {
-		T leftChild = (T) getArr()[left];
-		T rightChild = (T) getArr()[right];
+	/**
+	 * find a small element of two children
+	 * 
+	 * @param left
+	 *            - index to the left child
+	 * @param right
+	 *            - index to the right child
+	 * @return -
+	 */
+	@SuppressWarnings("unchecked")
+	private int smallestChild(int left, int right) {
+		T leftChild = null;
+		T rightChild = null;
+		if (left >= 0 && left < getCount()) {
+			leftChild = (T) getArr()[left];
+		}
+		if (right >= 0 && right < getCount()) {
+			rightChild = (T) getArr()[right];
+		}
 
-		if (left > 0 && right > 0 && leftChild.compareTo(rightChild) > 0) {
+		if (left > 0 && right > 0 && leftChild.compareTo(rightChild) > 0
+				&& leftChild != null && rightChild != null) {
 			return right;
-		} else if (left > 0 && right > 0 && leftChild.compareTo(rightChild) < 0) {
+		} else if (left > 0 && right > 0 && leftChild.compareTo(rightChild) < 0
+				&& leftChild != null && rightChild != null) {
 			return left;
 		} else if (left > 0 && right < 0) {
 			return left;
@@ -76,15 +106,19 @@ public class MyBinaryHeaps2<T extends Comparable<T>> implements Comparator<T> {
 	}
 
 	/**
+	 * swap two elements
 	 * 
 	 * @param element1
-	 *            - new Element
+	 *            index of first element
+	 * 
 	 * @param element2
-	 *            - parent to new Element
+	 *            index of second element
 	 */
+	@SuppressWarnings("unchecked")
 	private void swap(int element1, int element2) {
 		T firstElement = (T) getArr()[element1];
 		T secondElement = (T) getArr()[element2];
+
 		getArr()[element1] = secondElement;
 		getArr()[element2] = firstElement;
 	}
@@ -96,17 +130,16 @@ public class MyBinaryHeaps2<T extends Comparable<T>> implements Comparator<T> {
 	private void relocateNewNode() {
 		// get the last add element
 		int currentIndex = getCount();
-		int parentIndex = parentIndex(currentIndex);
+		int parentIndex = getParentIndex(currentIndex);
 		T child = (T) getArr()[currentIndex];
 		T parent = (T) getArr()[parentIndex];
-		// TODO
 		while (parent.compareTo(child) > 0 && currentIndex > 0) {
 			swap(currentIndex, parentIndex);
-			currentIndex = parentIndex / 2;
-			if (currentIndex < 1) {
+			currentIndex = parentIndex;
+			if (currentIndex < 0) {
 				break;
 			}
-			parentIndex = parentIndex(currentIndex);
+			parentIndex = getParentIndex(currentIndex);
 			child = (T) getArr()[currentIndex];
 			parent = (T) getArr()[parentIndex];
 		}
@@ -123,7 +156,7 @@ public class MyBinaryHeaps2<T extends Comparable<T>> implements Comparator<T> {
 		grow();
 		int index = getCount();
 		getArr()[index] = element;
-		if (getCount() >= 2) {
+		if (getCount() > 0) {
 			relocateNewNode();
 		}
 		setCount(getCount() + 1);
@@ -137,26 +170,32 @@ public class MyBinaryHeaps2<T extends Comparable<T>> implements Comparator<T> {
 		}
 		T element = (T) getArr()[0];
 		T newEl = (T) getArr()[getCount() - 1];
-		getArr()[1] = newEl;
+		getArr()[0] = newEl;
 		getArr()[getCount() - 1] = null;
 		setCount(getCount() - 1);
 
 		int currentIndex = 0;
-		int leftChild = leftChild(currentIndex);
-		int rightChild = rightChild(currentIndex);
-		int smallestChild = smalestChild(leftChild, rightChild);
+		int leftChildIndex = getLeftChildIndex(currentIndex);
+		int rightChildIndex = getRightChildIndex(currentIndex);
+		int smallestChildIndex = smallestChild(leftChildIndex, rightChildIndex);
 
 		T parent = (T) getArr()[currentIndex];
-		T childToChange = (T) getArr()[smallestChild];
+		T childToChange = null;
+		if (smallestChildIndex >= 0) {
+			childToChange = (T) getArr()[smallestChildIndex];
+		}
 
-		while (smallestChild > 0 && parent.compareTo(childToChange) > 0) {
-			swap(currentIndex, smallestChild);
-			currentIndex = smallestChild;
-			leftChild = leftChild(currentIndex);
-			rightChild = rightChild(currentIndex);
-			smallestChild = smalestChild(leftChild, rightChild);
+		while (smallestChildIndex > 0 && parent.compareTo(childToChange) > 0) {
+			swap(currentIndex, smallestChildIndex);
+			currentIndex = smallestChildIndex;
+			leftChildIndex = getLeftChildIndex(currentIndex);
+			rightChildIndex = getRightChildIndex(currentIndex);
+			smallestChildIndex = smallestChild(leftChildIndex, rightChildIndex);
 			parent = (T) getArr()[currentIndex];
-			childToChange = (T) getArr()[smallestChild];
+			if (smallestChildIndex < 0) {
+				continue;
+			}
+			childToChange = (T) getArr()[smallestChildIndex];
 		}
 
 		return element;

@@ -13,10 +13,14 @@ public class MyBinaryHeapTest {
 		myHeap.enqueue(5);
 		myHeap.enqueue(50);
 
-		myHeap.print();
+//		myHeap.print();
 
-//		System.out.println(myHeap.dequeue());
-//		System.out.println(myHeap.dequeue());
+		System.out.println(myHeap.dequeue());
+		System.out.println(myHeap.dequeue());
+		System.out.println(myHeap.dequeue());
+		System.out.println(myHeap.dequeue());
+		System.out.println(myHeap.dequeue());
+		System.out.println(myHeap.dequeue());
 	
 
 		PriorityQueue<Integer> a = new PriorityQueue<Integer>();
