@@ -1,62 +1,15 @@
 import java.util.Collections;
 import java.util.Comparator;
 
-public class MyBinaryHeaps<T> {
+public class MyBinaryHeaps<T extends Comparable<T>> implements Comparator<T> {
 
-	private class Node<T extends Comparable<T>> {
-		private T value;
-		private Node parent;
-		private Node leftChild;
-		private Node rightChild;
-
-		public Node(T element) {
-			setValue(element);
-		}
-
-		public T getValue() {
-			return value;
-		}
-
-		public void setValue(T value) {
-			this.value = value;
-		}
-
-		public Node getParent() {
-			return parent;
-		}
-
-		public void setParent(Node parent) {
-			this.parent = parent;
-		}
-
-		public Node getLeftChild() {
-			return leftChild;
-		}
-
-		public void setLeftChild(Node leftChild) {
-			this.leftChild = leftChild;
-		}
-
-		public Node getRightChild() {
-			return rightChild;
-		}
-
-		public void setRightChild(Node rightChild) {
-			this.rightChild = rightChild;
-		}
-
-		@Override
-		public String toString() {
-			return "Value: " + getValue() + " left child: " + getLeftChild()
-					+ " right child: " + getRightChild();
-
-		}
-
+	public int compare(T a, T b) {
+		return a.compareTo(b);
 	}
 
-	private Node[] arr;
-	private final int SIZE = 3;
-	private int count = 1;
+	private Object[] arr;
+	private final int SIZE = 16;
+	private int count = 0;
 
 	public int getCount() {
 		return count;
@@ -66,67 +19,198 @@ public class MyBinaryHeaps<T> {
 		this.count = count;
 	}
 
-	public Node[] getArr() {
+	public Object[] getArr() {
 		return arr;
 	}
 
 	public MyBinaryHeaps() {
-		arr = new Node[SIZE];
+		arr = new Object[SIZE];
 	}
 
 	/**
-	 * Resize double
+	 * Resize double the array
 	 */
-	public void grow() {
+	private void grow() {
 		if (count == getArr().length) {
-			Node[] newArr = new Node[arr.length * 2];
+			Object[] newArr = new Object[arr.length * 2];
 			System.arraycopy(arr, 0, newArr, 0, arr.length);
 			this.arr = newArr;
 		}
 	}
 
-	public void relocateNewNode() {
-		Node child = getArr()[getCount()];
-		Node parent = getArr()[getCount() / 2];
-		// How to comparer
+	/**
+	 * Find left child to the given index
+	 * 
+	 * @param index
+	 *            parent index
+	 * @return
+	 */
+	private int getLeftChildIndex(int index) {
+		return ((index * 2) + 1 < getCount() ? (index * 2) + 1 : -1);
 	}
 
-	public boolean add(Comparable element) {
-		grow();
-		Node newElement = new Node(element);
-		int index = getCount();
-		getArr()[index] = newElement;
-		if (getCount() / 2 > 0) {
-			newElement.setParent(getArr()[getCount() / 2]);
-			Node parent = newElement.getParent();
-			if ((getCount() % 2) == 0) {
-				parent.setLeftChild(newElement);
-			} else {
-				parent.setRightChild(newElement);
+	/**
+	 * Find right child to the given index
+	 * 
+	 * @param index
+	 *            parent index
+	 * @return
+	 */
+	private int getRightChildIndex(int index) {
+
+		return ((index * 2 + 2) < getCount() ? (index * 2 + 2) : -1);
+	}
+
+	/**
+	 * Find parent to the given index
+	 * 
+	 * @param index
+	 * @return
+	 */
+	private int getParentIndex(int index) {
+		return ((index - 1) / 2 > 0 ? (index - 1) / 2
+				: (((index - 1) / 2 == 0) ? 0 : -1));
+	}
+
+	/**
+	 * find a small element of two children
+	 * 
+	 * @param left
+	 *            - index to the left child
+	 * @param right
+	 *            - index to the right child
+	 * @return -
+	 */
+	@SuppressWarnings("unchecked")
+	private int smallestChild(int left, int right) {
+		T leftChild = null;
+		T rightChild = null;
+		if (left >= 0 && left < getCount()) {
+			leftChild = (T) getArr()[left];
+		}
+		if (right >= 0 && right < getCount()) {
+			rightChild = (T) getArr()[right];
+		}
+
+		if (left > 0 && right > 0 && leftChild.compareTo(rightChild) > 0
+				&& leftChild != null && rightChild != null) {
+			return right;
+		} else if (left > 0 && right > 0 && leftChild.compareTo(rightChild) < 0
+				&& leftChild != null && rightChild != null) {
+			return left;
+		} else if (left > 0 && right < 0) {
+			return left;
+		} else {
+			return right;
+		}
+	}
+
+	/**
+	 * swap two elements
+	 * 
+	 * @param element1
+	 *            index of first element
+	 * 
+	 * @param element2
+	 *            index of second element
+	 */
+	@SuppressWarnings("unchecked")
+	private void swap(int element1, int element2) {
+		T firstElement = (T) getArr()[element1];
+		T secondElement = (T) getArr()[element2];
+
+		getArr()[element1] = secondElement;
+		getArr()[element2] = firstElement;
+	}
+
+	/**
+	 * Relocate two element - children and parent. Swap them
+	 */
+	@SuppressWarnings("unchecked")
+	private void relocateNewNode() {
+		// get the last add element
+		int currentIndex = getCount();
+		int parentIndex = getParentIndex(currentIndex);
+		T child = (T) getArr()[currentIndex];
+		T parent = (T) getArr()[parentIndex];
+		while (parent.compareTo(child) > 0 && currentIndex > 0) {
+			swap(currentIndex, parentIndex);
+			currentIndex = parentIndex;
+			if (currentIndex < 0) {
+				break;
 			}
+			parentIndex = getParentIndex(currentIndex);
+			child = (T) getArr()[currentIndex];
+			parent = (T) getArr()[parentIndex];
+		}
+	}
+
+	/**
+	 * Add new element
+	 * 
+	 * @param element
+	 *            - new Element
+	 * @return - true or false
+	 */
+	public boolean enqueue(T element) {
+		grow();
+		int index = getCount();
+		getArr()[index] = element;
+		if (getCount() > 0) {
+			relocateNewNode();
 		}
 		setCount(getCount() + 1);
-
-		// TODO relocate new node to right position
-
 		return true;
 	}
 
-	public boolean remove(T element) {
-		// TODO
-		return false;
+	@SuppressWarnings("unchecked")
+	public T dequeue() {
+		if (getCount() == 0) {
+			throw new IllegalArgumentException("The queue is empty");
+		}
+		T element = (T) getArr()[0];
+		T newEl = (T) getArr()[getCount() - 1];
+		getArr()[0] = newEl;
+		getArr()[getCount() - 1] = null;
+		setCount(getCount() - 1);
+
+		int currentIndex = 0;
+		int leftChildIndex = getLeftChildIndex(currentIndex);
+		int rightChildIndex = getRightChildIndex(currentIndex);
+		int smallestChildIndex = smallestChild(leftChildIndex, rightChildIndex);
+
+		T parent = (T) getArr()[currentIndex];
+		T childToChange = null;
+		if (smallestChildIndex >= 0) {
+			childToChange = (T) getArr()[smallestChildIndex];
+		}
+
+		while (smallestChildIndex > 0 && parent.compareTo(childToChange) > 0) {
+			swap(currentIndex, smallestChildIndex);
+			currentIndex = smallestChildIndex;
+			leftChildIndex = getLeftChildIndex(currentIndex);
+			rightChildIndex = getRightChildIndex(currentIndex);
+			smallestChildIndex = smallestChild(leftChildIndex, rightChildIndex);
+			parent = (T) getArr()[currentIndex];
+			if (smallestChildIndex < 0) {
+				continue;
+			}
+			childToChange = (T) getArr()[smallestChildIndex];
+		}
+
+		return element;
 	}
 
-	public T find(T element) {
-		// TODO
-		return element;
-
+	@Override
+	public boolean equals(Object obj) {
+		return (this == obj);
 	}
 
 	public void print() {
-		for (int i = 0; i < arr.length; i++) {
-			System.out.println(arr[i].getValue());
+		for (Object element : this.getArr()) {
+			if (element != null) {
+				System.out.println(element);
+			}
 		}
 	}
-
 }
