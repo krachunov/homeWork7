@@ -11,6 +11,7 @@ public class MyBinaryHeapTest {
 		myHeap.enqueue(8);
 		myHeap.enqueue(30);
 		myHeap.enqueue(5);
+		myHeap.enqueue(5);
 		myHeap.enqueue(50);
 
 		System.out.println(myHeap.dequeue());
