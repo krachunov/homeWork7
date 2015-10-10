@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 public class MyBinaryHeapTest {
-
+	
 	public static void main(String[] args) {
 		MyBinaryHeaps<Integer> myHeap = new MyBinaryHeaps<Integer>();
 
